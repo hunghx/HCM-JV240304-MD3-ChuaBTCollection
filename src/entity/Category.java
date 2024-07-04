@@ -2,7 +2,9 @@ package entity;
 
 import util.InputMethods;
 
-public class Category implements IProductManagement {
+import java.io.Serializable;
+
+public class Category implements IProductManagement, Serializable {
     private static int autoId = 0;
     private int id;
     private String name;

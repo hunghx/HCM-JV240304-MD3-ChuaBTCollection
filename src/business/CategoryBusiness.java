@@ -1,15 +1,22 @@
 package business;
 
 import entity.Category;
+import util.IOFile;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class CategoryBusiness implements ICategoryDesign{
-    public static List<Category> categories = new ArrayList<>();
+    public static List<Category> categories ;
+
+    public CategoryBusiness() {
+        categories = IOFile.readFromFile(IOFile.CATEGORY_PATH);
+    }
+
     @Override
     public boolean create(Category category) {
         categories.add(category);
+        IOFile.writeToFile(IOFile.CATEGORY_PATH,categories);
         return true;
     }
 
@@ -21,12 +28,14 @@ public class CategoryBusiness implements ICategoryDesign{
     @Override
     public boolean update(Category category) {
         categories.set(categories.indexOf(findById(category.getId())),category);
+        IOFile.writeToFile(IOFile.CATEGORY_PATH,categories);
         return true;
     }
 
     @Override
     public boolean deleteById(Integer id) {
         categories.remove(findById(id));
+        IOFile.writeToFile(IOFile.CATEGORY_PATH,categories);
         return true;
     }
 

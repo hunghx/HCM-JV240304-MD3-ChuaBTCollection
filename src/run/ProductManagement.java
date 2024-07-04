@@ -60,7 +60,7 @@ public class ProductManagement {
                     showCategoryList();
                     break;
                 case 3:
-
+                    editCategory();
                     break;
                 case 4:
                     deleteCategory();
@@ -77,6 +77,18 @@ public class ProductManagement {
         }
     }
 
+    private static void editCategory() {
+        System.out.println("Nhập mã danh mục  cần sưa ");
+        int catId = InputMethods.getInteger();
+        Category catEdit =categoryBusiness.findById(catId);
+        if (catEdit == null) {
+            System.err.println("id không tồn tại");
+        } else {
+            catEdit.inputData();
+            categoryBusiness.update(catEdit);
+            System.out.println("Cập nhật thành công");
+        }
+    }
     private static void addNewCategory() {
         System.out.println("Nhập số lượng cần thêm mới");
         byte n = InputMethods.getByte();
@@ -89,6 +101,7 @@ public class ProductManagement {
         // thông báo thành công
         System.out.println("Đã thêm mới thành cong " + n + " dnah mục !");
     }
+
 
     private static void showCategoryList() {
         // lấy ra danh sách
@@ -108,10 +121,10 @@ public class ProductManagement {
         int catId = InputMethods.getInteger();
         // kiểm tra tồn tại
         // kiểm tra xem có sách thuộc danh mục này không
-        if (productBusiness.existByCategoryId(catId)){
-            System.err.println("Danh mục này có chưa sách nên ko thể xóa");
-            return;
-        }
+//        if (productBusiness.existByCategoryId(catId)){
+//            System.err.println("Danh mục này có chưa sách nên ko thể xóa");
+//            return;
+//        }
         if (categoryBusiness.findById(catId) == null) {
             System.err.println("id không tồn tại");
         } else {

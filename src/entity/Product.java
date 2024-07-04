@@ -1,10 +1,14 @@
 package entity;
 
+import business.CategoryBusiness;
+import business.ICategoryDesign;
 import util.InputMethods;
+
+import java.io.Serializable;
 
 import static business.CategoryBusiness.categories;
 
-public class Product implements IProductManagement{
+public class Product implements IProductManagement, Serializable {
     private static int autoId = 0;
     private int id;
     private String name;
@@ -12,7 +16,7 @@ public class Product implements IProductManagement{
     private String descriptions;
     private int stock;
     private boolean status;
-    private Category category;
+    private int categoryId; // quan hệ hợp thanh
 
     public Product() {
 
@@ -20,14 +24,14 @@ public class Product implements IProductManagement{
         status = true;
     }
 
-    public Product(int id, String name, double price, String descriptions, int stock, boolean status, Category category) {
+    public Product(int id, String name, double price, String descriptions, int stock, boolean status, int categoryId) {
         this.id = id;
         this.name = name;
         this.price = price;
         this.descriptions = descriptions;
         this.stock = stock;
         this.status = status;
-        this.category = category;
+        this.categoryId = categoryId;
     }
 
     public int getId() {
@@ -78,12 +82,12 @@ public class Product implements IProductManagement{
         this.status = status;
     }
 
-    public Category getCategory() {
-        return category;
+    public int getCategoryId() {
+        return categoryId;
     }
 
-    public void setCategory(Category category) {
-        this.category = category;
+    public void setCategoryId(int categoryId) {
+        this.categoryId = categoryId;
     }
 
     @Override
@@ -105,7 +109,7 @@ public class Product implements IProductManagement{
         while (true){
             int index = InputMethods.getInteger();
             if (index >=1 && index <= categories.size()){
-                this.category = categories.get(index-1);
+                this.categoryId = categories.get(index-1).getId();
                 break;
             }else {
                 System.err.println("Nhap khong chinh xac , vui long nhap lai");
@@ -115,6 +119,14 @@ public class Product implements IProductManagement{
 
     @Override
     public void displayData() {
-        System.out.printf("|ID : %-4s | Name: %-20s | Price : %-8s | Stock : %-5s | CategoryName : %-15s | Status : %10s |\n",id,name,price,stock,category.getName(),status?"Active":"InActive");
+        System.out.printf("|ID : %-4s | Name: %-20s | Price : %-8s | Stock : %-5s | CategoryName : %-15s | Status : %10s |\n",id,name,price,stock,getCategoryName(),status?"Active":"InActive");
+    }
+    private String getCategoryName(){
+        ICategoryDesign categoryDesign = new CategoryBusiness();
+        Category cat = categoryDesign.findById(categoryId);
+        if (cat==null){
+            throw new RuntimeException("id ko tim thay");
+        }
+        return cat.getName();
     }
 }
