@@ -8,6 +8,9 @@ import exception.UsernameAndPasswordException;
 import util.IOFile;
 import util.InputMethods;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+
 public class AuthenticationMenu {
     private static final IAuthDesign authDesign = new AuthBusiness();
     public static void main(String[] args) {
@@ -66,7 +69,24 @@ public class AuthenticationMenu {
         }
     }
     private static  void register(){
-
+        System.out.println("------------------Register----------------");
+        User user = new User();
+        System.out.println("Nhập Tên ngươi dùng");
+        user.setFullName(InputMethods.getString());
+        System.out.println("Nhập email đăng nhập");
+        user.setEmail(InputMethods.getString());
+        System.out.println("Nhập password");
+        user.setPassword(InputMethods.getString());
+        System.out.println("Nhập số điện thoại ");
+        user.setPhone(InputMethods.getString());
+        System.out.println("Nhập điịa chỉ");
+        user.setAddress(InputMethods.getString());
+        System.out.println("Nhập ngày sinh (dd/MM/yyyy)");
+        user.setBirthday(LocalDate.parse(InputMethods.getString(),DateTimeFormatter.ofPattern("dd/MM/yyyy")));
+        authDesign.signUp(user);
+        System.out.println("Đăng kí thành công");
+        // chuyển hug đến đăng nhập
+        login();
     }
 
     private static void menuAdmin(){

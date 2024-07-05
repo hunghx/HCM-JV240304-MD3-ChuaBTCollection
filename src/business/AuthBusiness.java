@@ -1,5 +1,6 @@
 package business;
 
+import entity.RoleName;
 import entity.User;
 import exception.UsernameAndPasswordException;
 import org.mindrot.jbcrypt.BCrypt;
@@ -20,6 +21,8 @@ public class AuthBusiness implements IAuthDesign{
 
     @Override
     public void signUp(User user) {
+        user.setRoleName(RoleName.USER);
+        user.setBlocked(false);
         user.setPassword(BCrypt.hashpw(user.getPassword(),BCrypt.gensalt(5)));
         users.add(user);
         IOFile.writeToFile(IOFile.USER_PATH,users);
